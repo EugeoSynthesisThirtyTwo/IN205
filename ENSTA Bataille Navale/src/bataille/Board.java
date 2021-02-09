@@ -1,3 +1,4 @@
+package bataille;
 
 public class Board
 {
@@ -11,7 +12,7 @@ public class Board
 	 * @param name : le nom de la grille
 	 * @param size : la taille de la grille
 	 */
-	Board(String name, int size)
+	public Board(String name, int size)
 	{
 		this.name = name;
 		this.navires = new char[size][size];
@@ -23,7 +24,7 @@ public class Board
 	 * @param name : le nom de la grille
 	 * créé une grille de taille 10x10
 	 */
-	Board(String name)
+	public Board(String name)
 	{
 		this(name, 10);
 	}

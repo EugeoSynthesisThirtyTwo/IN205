@@ -1,3 +1,4 @@
+package bataille;
 
 import java.io.Serializable;
 import java.util.*;

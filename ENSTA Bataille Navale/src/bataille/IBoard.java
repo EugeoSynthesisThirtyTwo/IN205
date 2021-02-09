@@ -1,3 +1,4 @@
+package bataille;
 public interface IBoard { 
 
     /**

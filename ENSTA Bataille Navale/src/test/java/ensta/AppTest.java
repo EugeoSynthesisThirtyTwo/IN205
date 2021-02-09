@@ -1,13 +1,8 @@
-/**
- * aucune des importations ne fonctionne
- * à cause de l'arborescence du projet.
- */
+package test.java.ensta;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import Board;
 
 /**
  * Unit test for simple App.
@@ -39,15 +34,4 @@ public class AppTest extends TestCase
     {
         assertTrue( true );
     }
-
-    /**
-     * Vérification visuelle de l'affichage de la grille
-     */
-    public void testBoard();
-    {
-    	Board board = new Board("Joueur 0", 15);
-    	
-    	System.out.println(board);
-    }
 }
-*/

@@ -1,3 +1,4 @@
+package bataille;
 
 import java.io.*;
 import java.util.Arrays;
