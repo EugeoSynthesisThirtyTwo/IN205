@@ -1,4 +1,3 @@
-package ensta;
 import java.util.NoSuchElementException;
 
 public enum Hit {
