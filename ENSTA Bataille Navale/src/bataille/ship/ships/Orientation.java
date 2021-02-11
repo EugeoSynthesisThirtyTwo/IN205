@@ -1,4 +1,4 @@
-package bataille.ship;
+package bataille.ship.ships;
 
 public enum Orientation
 {

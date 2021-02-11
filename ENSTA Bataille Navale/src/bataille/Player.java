@@ -3,7 +3,7 @@ package bataille;
 import java.util.List;
 
 import bataille.ship.AbstractShip;
-import bataille.ship.Orientation;
+import bataille.ship.ships.Orientation;
 
 /** yooooo */
 public class Player {
@@ -37,8 +37,6 @@ public class Player {
      * Read keyboard input to get ships coordinates. Place ships on given coodrinates.
      */
     public void putShips() {
-        boolean done = false;
-
         int numero = 1;
 
         /**
@@ -51,7 +49,8 @@ public class Player {
             
             while (!success)
             {
-            	System.out.println("\n" + board);
+            	System.out.println();
+            	board.print();
                 String msg = String.format("\nPlacer %d : %s(%d)", numero, s.getName(), s.getLength());
                 System.out.println(msg);
                 InputHelper.ShipInput res = InputHelper.readShipInput();
@@ -72,7 +71,7 @@ public class Player {
                 		break;
                 }
                 
-                success = board.putShip(s, res.x, res.y + 1);
+                success = board.putShip(s, res.x, res.y);
                 
                 if (!success)
                 	System.out.println("Le positionnement n'est pas valide, il y a intersection.");

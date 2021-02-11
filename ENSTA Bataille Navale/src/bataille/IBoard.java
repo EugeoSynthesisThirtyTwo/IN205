@@ -41,5 +41,5 @@ public interface IBoard {
      * @param y
      * @return true if the hit is successful
      */
-    boolean getHit(int x, int y);
+    Boolean getHit(int x, int y);
 }

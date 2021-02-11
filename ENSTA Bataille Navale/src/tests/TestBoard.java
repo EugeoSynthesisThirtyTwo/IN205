@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import bataille.Board;
 import bataille.Player;
 import bataille.ship.AbstractShip;
-import bataille.ship.Battleship;
-import bataille.ship.Carrier;
-import bataille.ship.Destroyer;
-import bataille.ship.Submarine;
+import bataille.ship.ships.Battleship;
+import bataille.ship.ships.Carrier;
+import bataille.ship.ships.Destroyer;
+import bataille.ship.ships.Submarine;
 
 public class TestBoard
 {

@@ -3,14 +3,17 @@ package bataille;
 public class ColorUtil {
 
     /* ***
-     * Constructeur de la classe ColorUtil, utilisable uniquement par la classe elle-mÃªme
+     * Constructeur de la classe ColorUtil, utilisable uniquement par la classe elle-même
+     * 
+     * => c'est inutile car ce constructeur n'est jamais appelé.
+     * Autant déclarer la classe en abstract.
      */
     private ColorUtil() {};
 
     /* ***
-     * enum Color interne Ã  la classe ColorUtil
+     * enum Color interne à la classe ColorUtil
      */
-    enum Color {
+    public enum Color {
         RESET("\u001B[0m"),
         BLACK("\u001B[30m"),
         RED("\u001B[31m"),
@@ -35,7 +38,7 @@ public class ColorUtil {
     }
 
     /* ***
-     * MÃ©thodes de la classe ColorUtil
+     * Méthodes de la classe ColorUtil
      */
     public static String colorize(String text, Color color) {
         return String.format("%s%s%s", color.value, text, Color.RESET.value);

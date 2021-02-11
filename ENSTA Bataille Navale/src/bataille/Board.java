@@ -1,13 +1,20 @@
 package bataille;
 
 import bataille.ship.AbstractShip;
+import bataille.ship.ShipState;
 
 public class Board implements IBoard
 {
 	private String name;
 	public final int size;
-	private char[][] navires;
-	private boolean[][] frappes;
+	private ShipState[][] navires;
+	
+	/**
+	 * null : la case ne s'est pas faite tirer dessus<br>
+	 * false : le tir a fini dans l'eau<br>
+	 * true : le tir a touché un bateau
+	 */
+	private Boolean[][] frappes;
 	
 	/**
 	 * créé une grille de taille size x size
@@ -18,14 +25,14 @@ public class Board implements IBoard
 	{
 		this.setName(name);
 		this.size = size;
-		navires = new char[size][size];
-		frappes = new boolean[size][size];
+		navires = new ShipState[size][size];
+		frappes = new Boolean[size][size];
 		
 		for (int y = 0; y < size; y++)
 			for (int x = 0; x < size; x++)
 			{
-				navires[y][x] = '.';
-				frappes[y][x] = false;
+				navires[y][x] = new ShipState(null);
+				frappes[y][x] = null;
 			}
 	}
 	
@@ -38,66 +45,56 @@ public class Board implements IBoard
 		this(name, 10);
 	}
 	
-	/**
-	 * renvoie un String sur plusieurs lignes contenant
-	 * la grille des navires et la grille des frappes côtes à côtes
-	 */
-	public String toString()
+	public void print()
 	{
-		String result = "";
-		
-		result += "Navires :";
+		System.out.print("Navires :");
 		
 		for (int i = 0; i < 2 * size - 3; i++)
-			result += " ";
+			System.out.print(" ");
 		
-		result += "Frappes :\n  ";
+		System.out.print("Frappes :\n  ");
 		
 		for (int i = 0; i < size; i++)
-			result += " " + (char) ('A' + i);
+			System.out.print(" " + (char) ('A' + i));
 
-		result += "      ";
+		System.out.print("      ");
 		
 		for (int i = 0; i < size; i++)
-			result += " " + (char) ('A' + i);
+			System.out.print(" " + (char) ('A' + i));
 		
-		result += "\n";
+		System.out.print("\n");
 		
 		for (int line = 1; line <= size; line++)
 		{
 			if (line < 10)
-				result += "0" + line;
+				System.out.print("0" + line);
 			else
-				result += line;
+				System.out.print(line);
 
 			for (int i = 0; i < size; i++)
-				result += " " + navires[line - 1][i];
+				System.out.print(" " + navires[line - 1][i]);
 			
-			result += "    ";
+			System.out.print("    ");
 
 			if (line < 10)
-				result += "0" + line;
+				System.out.print("0" + line);
 			else
-				result += line;
+				System.out.print(line);
 
 			for (int i = 0; i < size; i++)
-				if (frappes[line - 1][i])
-					result += " x";
+			{
+				Boolean hit = frappes[line - 1][i];
+				
+				if (hit == null)
+					System.out.print(" .");
+				else if (hit)
+					System.out.print(" x");
 				else
-					result += " .";
+					System.out.print(ColorUtil.colorize(" x", ColorUtil.Color.RED));
+			}
 			
-			result += "\n";
+			System.out.print("\n");
 		}
-		
-		return result;
-	}
-	
-	/**
-	 * System.out.print(this);
-	 */
-	public void print()
-	{
-		System.out.print(this);
 	}
 
 	@Override
@@ -135,7 +132,7 @@ public class Board implements IBoard
 		// ou si le bateau finira en dehors des limites
 		for (int i = 0; i < length && valide; i++)
 		{
-			if (x_ < 0 || x_ >= size || y_ < 0 || y_ >= size || navires[y_][x_] != '.')
+			if (x_ < 0 || x_ >= size || y_ < 0 || y_ >= size || navires[y_][x_].isAShip())
 				valide = false;
 			
 			x_ += dx;
@@ -151,7 +148,7 @@ public class Board implements IBoard
 
 		for (int i = 0; i < length; i++)
 		{
-			navires[y_][x_] = ship.getLabel();
+			navires[y_][x_] = new ShipState(ship);
 			x_ += dx;
 			y_ += dy;
 		}
@@ -162,7 +159,7 @@ public class Board implements IBoard
 	@Override
 	public boolean hasShip(int x, int y)
 	{
-		return navires[y][x] != '.';
+		return navires[y][x].isAShip();
 	}
 
 	@Override
@@ -172,7 +169,7 @@ public class Board implements IBoard
 	}
 
 	@Override
-	public boolean getHit(int x, int y)
+	public Boolean getHit(int x, int y)
 	{
 		return frappes[y][x];
 	}

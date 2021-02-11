@@ -1,11 +1,16 @@
 package bataille;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 import bataille.ship.AbstractShip;
+import bataille.ship.ships.Battleship;
+import bataille.ship.ships.Carrier;
+import bataille.ship.ships.Destroyer;
+import bataille.ship.ships.Submarine;
 
 public class Game {
 
@@ -159,7 +164,7 @@ public class Game {
     }
 
     private static List<AbstractShip> createDefaultShips() {
-        return Arrays.asList(new AbstractShip[]{new Destroyer(), new Submarine(), new Submarine(), new BattleShip(), new Carrier()});
+        return Arrays.asList(new AbstractShip[]{new Destroyer(), new Submarine(), new Submarine(), new Battleship(), new Carrier()});
     }
 
     public static void main(String args[]) {

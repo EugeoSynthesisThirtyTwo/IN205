@@ -2,11 +2,11 @@ package bataille;
 import java.util.NoSuchElementException;
 
 public enum Hit {
-    MISS(-1, "manquÃ©"),
-    STIKE(-2, "touchÃ©"),
-    DESTROYER(2, "FrÃ©gate"),
+    MISS(-1, "manqué"),
+    STIKE(-2, "touché"),
+    DESTROYER(2, "Frégate"),
     SUBMARINE(3, "Sous-marin"),
-    BATTLESHIP(4, "Croiseur"),
+    BATTLESHIP(4, "Croiseur"),	
     CARRIER(5, "Porte-avion");
 
     /* ***
