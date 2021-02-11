@@ -5,20 +5,20 @@ public abstract class AbstractShip
 	private char label;
 	private String nom;
 	private Orientation orientation;
-	private int size;
+	private int length;
 	
 	/**
 	 * @param label le charactere qui sera affiché à l'écran
 	 * @param nom le nom du bateau
 	 * @param orientation l'orientation du bateau
-	 * @param size la longueur du bateau
+	 * @param length la longueur du bateau
 	 */
-	public AbstractShip(char label, String nom, Orientation orientation, int size)
+	public AbstractShip(char label, String nom, Orientation orientation, int length)
 	{
 		setLabel(label);
-		setNom(nom);
+		setName(nom);
 		setOrientation(orientation);
-		this.size = size;
+		this.length = length;
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public abstract class AbstractShip
 	/**
 	 * @return le nom du bateau
 	 */
-	public String getNom()
+	public String getName()
 	{
 		return nom;
 	}
@@ -48,7 +48,7 @@ public abstract class AbstractShip
 	/**
 	 * @param nom le nom du bateau
 	 */
-	public void setNom(String nom)
+	public void setName(String nom)
 	{
 		this.nom = nom;
 	}
@@ -72,13 +72,13 @@ public abstract class AbstractShip
 	/**
 	 * @return la longueur du bateau
 	 */
-	public int getSize()
+	public int getLength()
 	{
-		return size;
+		return length;
 	}
 	
 	public String toString()
 	{
-		return nom + "(size = " + size + ", orientation = " + orientation + ")";
+		return nom + "(length = " + length + ", orientation = " + orientation + ")";
 	}
 }

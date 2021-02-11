@@ -63,7 +63,7 @@ public class Board implements IBoard
 		
 		result += "\n";
 		
-		for (int line = 0; line < size; line++)
+		for (int line = 1; line <= size; line++)
 		{
 			if (line < 10)
 				result += "0" + line;
@@ -71,7 +71,7 @@ public class Board implements IBoard
 				result += line;
 
 			for (int i = 0; i < size; i++)
-				result += " " + navires[line][i];
+				result += " " + navires[line - 1][i];
 			
 			result += "    ";
 
@@ -81,7 +81,7 @@ public class Board implements IBoard
 				result += line;
 
 			for (int i = 0; i < size; i++)
-				if (frappes[line][i])
+				if (frappes[line - 1][i])
 					result += " x";
 				else
 					result += " .";
@@ -109,7 +109,7 @@ public class Board implements IBoard
 	@Override
 	public boolean putShip(AbstractShip ship, int x, int y)
 	{
-		int length = ship.getSize();
+		int length = ship.getLength();
 		int dx = 0, dy = 0;
 		
 		switch (ship.getOrientation())

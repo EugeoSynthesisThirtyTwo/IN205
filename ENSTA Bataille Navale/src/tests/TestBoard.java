@@ -1,11 +1,13 @@
 package tests;
 
+import java.util.ArrayList;
+
 import bataille.Board;
+import bataille.Player;
 import bataille.ship.AbstractShip;
 import bataille.ship.Battleship;
 import bataille.ship.Carrier;
 import bataille.ship.Destroyer;
-import bataille.ship.Orientation;
 import bataille.ship.Submarine;
 
 public class TestBoard
@@ -15,39 +17,18 @@ public class TestBoard
 	 */
 	public static void main(String[] args)
 	{
-		Board board = new Board("Joueur 0", 15);
-		
-		AbstractShip ship;
-		boolean success;
-		
-		ship = new Battleship(Orientation.EAST);
-		success = board.putShip(ship, 0, 0);
-		System.out.println("putShip(" + ship + ", 0, 0) = " + (success ? "Succes" : "Failure"));
+		ArrayList<AbstractShip> ships = new ArrayList<>();
+		ships.add(new Destroyer());
+		ships.add(new Submarine());
+		ships.add(new Submarine());
+		ships.add(new Battleship());
+		ships.add(new Carrier());
 
-		ship = new Carrier(Orientation.WEST);
-		success = board.putShip(ship, 6, 6);
-		System.out.println("putShip(" + ship + ", 6, 6) = " + (success ? "Succes" : "Failure"));
+		Board joueur1 = new Board("Joueur 1", 10);
+		Board joueur2 = new Board("Joueur 2", 10);
+		Player player = new Player(joueur1, joueur2, ships);
 		
-		ship = new Destroyer(Orientation.NORTH);
-		success = board.putShip(ship, 7, 7);
-		System.out.println("putShip(" + ship + ", 7, 7) = " + (success ? "Succes" : "Failure"));
-		
-		ship = new Submarine(Orientation.SOUTH);
-		success = board.putShip(ship, 9, 1);
-		System.out.println("putShip(" + ship + ", 9, 1) = " + (success ? "Succes" : "Failure"));
-		
-		
-		// devrait échouer car il y a une intersection avec le Submarine
-		ship = new Carrier(Orientation.SOUTH);
-		success = board.putShip(ship, 6, 2);
-		System.out.println("putShip(" + ship + ", 6, 2) = " + (success ? "Succes" : "Failure"));
-		
-		// devrait échouer car il est en dehors des limites
-		ship = new Carrier(Orientation.WEST);
-		success = board.putShip(ship, 2, 9);
-		System.out.println("putShip(" + ship + ", 2, 9) = " + (success ? "Succes" : "Failure"));
-		
-		System.out.println("\n" + board);
+		player.putShips();
 	}
 }
 
