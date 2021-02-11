@@ -23,9 +23,9 @@ public class Player {
         this.board = board;
         
         // J'ai changé la ligne suivante car la longueur 0 ça ne va pas
-        this.ships = ships.toArray(new AbstractShip[0]);
+        //this.ships = ships.toArray(new AbstractShip[0]);
         
-        //this.ships = ships.toArray(new AbstractShip[ships.size()]);
+        this.ships = ships.toArray(new AbstractShip[ships.size()]);
         this.opponentBoard = opponentBoard;
     }
 
