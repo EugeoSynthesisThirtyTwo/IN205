@@ -15,8 +15,9 @@ public interface IBoard {
     * @param ship The ship to place on the board
     * @param x
     * @param y
+    * @return true if the ship is put and false if it failed
     */
-    void putShip(AbstractShip ship, int x, int y);
+    boolean putShip(AbstractShip ship, int x, int y);
 
     /**
      * Get if a ship is placed at the given position
@@ -40,5 +41,5 @@ public interface IBoard {
      * @param y
      * @return true if the hit is successful
      */
-    Boolean getHit(int x, int y);
+    boolean getHit(int x, int y);
 }

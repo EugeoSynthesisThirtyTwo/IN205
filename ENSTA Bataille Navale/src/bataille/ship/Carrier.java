@@ -1,7 +1,8 @@
 package bataille.ship;
 
-import bataille.Orientation;
-
+/**
+ * bateau de longueur 5
+ */
 public class Carrier extends AbstractShip
 {
 	public Carrier()
@@ -11,11 +12,8 @@ public class Carrier extends AbstractShip
 	
 	public Carrier(Orientation orientation)
 	{
-		/*
-		 * TODO définir la taille des bateaux,
-		 * et les coordonnées des cases, quand
-		 * l'énoncé donnera la forme des bateaux.
-		 */
-		super('C', "Carrier", orientation, );
+		// on ne connais pas la taille des bateaux
+		// donc on choisi une taille arbitraire
+		super('C', "Carrier", orientation, 5);
 	}
 }

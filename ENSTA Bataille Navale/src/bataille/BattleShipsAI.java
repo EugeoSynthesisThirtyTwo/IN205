@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 import bataille.ship.AbstractShip;
+import bataille.ship.Orientation;
 
 public class BattleShipsAI implements Serializable {
 
