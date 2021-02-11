@@ -3,6 +3,8 @@ package bataille;
 import java.io.Serializable;
 import java.util.List;
 
+import bataille.ship.AbstractShip;
+
 /** yooooo */
 public class Player {
     /* **

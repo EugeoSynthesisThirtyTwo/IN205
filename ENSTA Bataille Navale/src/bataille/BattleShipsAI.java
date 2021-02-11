@@ -3,6 +3,8 @@ package bataille;
 import java.io.Serializable;
 import java.util.*;
 
+import bataille.ship.AbstractShip;
+
 public class BattleShipsAI implements Serializable {
 
     /* **
@@ -134,22 +136,22 @@ public class BattleShipsAI implements Serializable {
     private boolean canPutShip(AbstractShip ship, int x, int y) {
         AbstractShip.Orientation o = ship.getOrientation();
         int dx = 0, dy = 0;
-        if (o == AbstractShip.Orientation.EAST) {
+        if (o == bataille.ship.Orientation.EAST) {
             if (x + ship.getLength() >= this.size) {
                 return false;
             }
             dx = 1;
-        } else if (o == AbstractShip.Orientation.SOUTH) {
+        } else if (o == bataille.ship.Orientation.SOUTH) {
             if (y + ship.getLength() >= this.size) {
                 return false;
             }
             dy = 1;
-        } else if (o == AbstractShip.Orientation.NORTH) {
+        } else if (o == bataille.ship.Orientation.NORTH) {
             if (y + 1 - ship.getLength() < 0) {
                 return false;
             }
             dy = -1;
-        } else if (o == AbstractShip.Orientation.WEST) {
+        } else if (o == bataille.ship.Orientation.WEST) {
             if (x + 1 - ship.getLength() < 0) {
                 return false;
             }

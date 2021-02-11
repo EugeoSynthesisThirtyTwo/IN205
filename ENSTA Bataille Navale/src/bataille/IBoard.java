@@ -1,4 +1,7 @@
 package bataille;
+
+import bataille.ship.AbstractShip;
+
 public interface IBoard { 
 
     /**
