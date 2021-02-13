@@ -1,5 +1,6 @@
-package bataille;
+package bataille.board;
 
+import bataille.Hit;
 import bataille.ship.AbstractShip;
 
 public interface IBoard { 
@@ -20,10 +21,10 @@ public interface IBoard {
     boolean putShip(AbstractShip ship, int x, int y);
 
     /**
-     * Get if a ship is placed at the given position
+     * Get if a ship not sunk is placed at the given position
      * @param x
      * @param y
-     * @return true if a ship is located at the given position
+     * @return true if a ship not sunk is located at the given position
      */
     boolean hasShip(int x, int y);
 
@@ -42,4 +43,12 @@ public interface IBoard {
      * @return true if the hit is successful
      */
     Boolean getHit(int x, int y);
+    
+    /**
+    * Sends a hit at the given position
+    * @param x
+    * @param y
+    * @return status for the hit (eg : strike or miss).
+    */
+    Hit sendHit(int x, int y);
 }

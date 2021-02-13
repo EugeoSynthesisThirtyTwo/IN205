@@ -1,7 +1,5 @@
 package bataille.ship;
 
-import bataille.ship.ships.Orientation;
-
 public abstract class AbstractShip
 {
 	private char label;

@@ -1,6 +1,7 @@
-package bataille.ship;
+package bataille.board;
 
 import bataille.ColorUtil;
+import bataille.ship.AbstractShip;
 
 /**
  * Sert de case pour la grille de Board.
@@ -43,17 +44,22 @@ public class ShipState
 	 * à cet endroit et en blanc sinon.<br>
 	 * <br>
 	 * Si la case ne concerne pas un bateau :<br>
-	 * Renvoie "." en rouge si la case est touchée, "." en blanc sinon.
+	 * Renvoie "x" en blanc si la case est touchée, "." en blanc sinon.
 	 */
 	public String toString()
 	{
-		if (!isAShip())
-			return ".";
+		if (isAShip())
+		{
+			if (struck)
+				return ColorUtil.colorize(ship.getLabel(), ColorUtil.Color.RED);
 			
+			return String.valueOf(ship.getLabel());
+		}
+
 		if (struck)
-			return ColorUtil.colorize(ship.getLabel(), ColorUtil.Color.RED);
+			return "x";
 		
-		return String.valueOf(ship.getLabel());
+		return ".";
 	}
 	
 	/**
@@ -80,13 +86,13 @@ public class ShipState
 	 * renvoie vrai si le bateau est complètement détruit<br>
 	 * <br>
 	 * Si la case ne concerne pas un bateau :<br>
-	 * renvoie vrai par défaut
+	 * renvoie false par défaut
 	 */
 	public boolean isSunk()
 	{
 		if (isAShip())
 			return ship.isSunk();
 		
-		return true;
+		return false;
 	}
 }

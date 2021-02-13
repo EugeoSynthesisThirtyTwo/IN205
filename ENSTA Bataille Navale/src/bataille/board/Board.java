@@ -1,7 +1,12 @@
-package bataille;
+package bataille.board;
 
+import bataille.ColorUtil;
+import bataille.Hit;
 import bataille.ship.AbstractShip;
-import bataille.ship.ShipState;
+import bataille.ship.Battleship;
+import bataille.ship.Carrier;
+import bataille.ship.Destroyer;
+import bataille.ship.Submarine;
 
 public class Board implements IBoard
 {
@@ -159,7 +164,7 @@ public class Board implements IBoard
 	@Override
 	public boolean hasShip(int x, int y)
 	{
-		return navires[y][x].isAShip();
+		return navires[y][x].isAShip() && !navires[y][x].isSunk();
 	}
 
 	@Override
@@ -188,5 +193,36 @@ public class Board implements IBoard
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	@Override
+	public Hit sendHit(int x, int y)
+	{
+		if (navires[y][x].isStruck())
+			return Hit.MISS;
+			
+		navires[y][x].addStrike();
+		
+		if (!navires[y][x].isAShip())
+			return Hit.MISS;
+		
+		if (navires[y][x].isSunk())
+		{
+			AbstractShip ship = navires[y][x].getShip();
+			
+			if (ship instanceof Destroyer)
+				return Hit.DESTROYER;
+			
+			if (ship instanceof Submarine)
+				return Hit.SUBMARINE;
+			
+			if (ship instanceof Battleship)
+				return Hit.BATTLESHIP;
+			
+			if (ship instanceof Carrier)
+				return Hit.CARRIER;
+		}
+		
+		return Hit.STRIKE;
 	}
 }

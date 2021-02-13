@@ -1,6 +1,4 @@
-package bataille.ship.ships;
-
-import bataille.ship.AbstractShip;
+package bataille.ship;
 
 /**
  * bateau de longueur 5

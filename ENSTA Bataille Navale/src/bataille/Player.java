@@ -2,8 +2,9 @@ package bataille;
 
 import java.util.List;
 
+import bataille.board.Board;
 import bataille.ship.AbstractShip;
-import bataille.ship.ships.Orientation;
+import bataille.ship.Orientation;
 
 /** yooooo */
 public class Player {
@@ -84,17 +85,29 @@ public class Player {
     }
 
     public Hit sendHit(int[] coords) {
-        boolean done = true;
+        boolean valide = false;
         Hit hit = null;
+        int size = opponentBoard.getSize();
 
-        do {
+        while (!valide)
+        {
             System.out.println("où frapper?");
             InputHelper.CoordInput hitInput = InputHelper.readCoordInput();
-            // TODO call sendHit on this.opponentBoard
-
-            // TODO : Game expects sendHit to return BOTH hit result & hit coords.
-            // return hit is obvious. But how to return coords at the same time ?
-        } while (!done);
+            int x = hitInput.x, y = hitInput.y;
+            
+            valide = (x >= 0 && x < size && y >= 0 && y < size);
+            
+            if (valide)
+            {
+                hit = opponentBoard.sendHit(x, y);
+                coords[0] = x;
+                coords[1] = y;
+            }
+            else
+            {
+            	System.out.println("La position est en dehors des limites.");
+            }
+        }
 
         return hit;
     }

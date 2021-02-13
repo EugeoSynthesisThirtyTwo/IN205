@@ -2,6 +2,7 @@ package bataille;
 import java.io.Serializable;
 import java.util.List;
 
+import bataille.board.Board;
 import bataille.ship.AbstractShip;
 
 public class AIPlayer extends Player {
