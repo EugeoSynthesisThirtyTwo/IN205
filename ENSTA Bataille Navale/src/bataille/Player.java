@@ -3,6 +3,7 @@ package bataille;
 import java.util.List;
 
 import bataille.board.Board;
+import bataille.board.Hit;
 import bataille.ship.AbstractShip;
 import bataille.ship.Orientation;
 

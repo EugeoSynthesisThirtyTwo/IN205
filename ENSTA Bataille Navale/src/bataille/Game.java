@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import bataille.board.Board;
+import bataille.board.Hit;
 import bataille.ship.AbstractShip;
 import bataille.ship.Battleship;
 import bataille.ship.Carrier;

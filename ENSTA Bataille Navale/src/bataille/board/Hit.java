@@ -1,4 +1,4 @@
-package bataille;
+package bataille.board;
 import java.util.NoSuchElementException;
 
 public enum Hit {

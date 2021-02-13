@@ -1,6 +1,5 @@
 package bataille.board;
 
-import bataille.Hit;
 import bataille.ship.AbstractShip;
 
 public interface IBoard { 

@@ -1,5 +1,4 @@
 package bataille;
-import java.io.Serializable;
 import java.util.List;
 
 import bataille.board.Board;

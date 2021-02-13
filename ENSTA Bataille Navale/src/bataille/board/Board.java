@@ -1,7 +1,6 @@
 package bataille.board;
 
 import bataille.ColorUtil;
-import bataille.Hit;
 import bataille.ship.AbstractShip;
 import bataille.ship.Battleship;
 import bataille.ship.Carrier;
@@ -22,6 +21,11 @@ public class Board implements IBoard
 	private Boolean[][] frappes;
 	
 	/**
+	 * 0 when all the ships are sunk.
+	 */
+	private int remainingShips;
+	
+	/**
 	 * créé une grille de taille size x size
 	 * @param name : le nom de la grille
 	 * @param size : la taille de la grille
@@ -39,6 +43,8 @@ public class Board implements IBoard
 				navires[y][x] = new ShipState(null);
 				frappes[y][x] = null;
 			}
+		
+		remainingShips = 0;
 	}
 	
 	/**
@@ -93,9 +99,9 @@ public class Board implements IBoard
 				if (hit == null)
 					System.out.print(" .");
 				else if (hit)
-					System.out.print(" x");
-				else
 					System.out.print(ColorUtil.colorize(" x", ColorUtil.Color.RED));
+				else
+					System.out.print(" x");
 			}
 			
 			System.out.print("\n");
@@ -158,6 +164,7 @@ public class Board implements IBoard
 			y_ += dy;
 		}
 		
+		remainingShips++;
 		return true;
 	}
 
@@ -166,10 +173,19 @@ public class Board implements IBoard
 	{
 		return navires[y][x].isAShip() && !navires[y][x].isSunk();
 	}
+	
+	/**
+	 * @return true if there is no ship left
+	 */
+	public boolean isCleared()
+	{
+		return remainingShips == 0;
+	}
 
 	@Override
 	public void setHit(boolean hit, int x, int y)
 	{
+		System.out.println("hit : " + hit);
 		frappes[y][x] = hit;
 	}
 
@@ -208,6 +224,7 @@ public class Board implements IBoard
 		
 		if (navires[y][x].isSunk())
 		{
+			remainingShips--;
 			AbstractShip ship = navires[y][x].getShip();
 			
 			if (ship instanceof Destroyer)
