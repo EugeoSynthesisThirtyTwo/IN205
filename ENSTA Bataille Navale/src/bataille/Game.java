@@ -1,7 +1,6 @@
 package bataille;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -26,7 +25,8 @@ public class Game {
      */
     private Player player1;
     private Player player2;
-    private Scanner sin;
+    
+    private Scanner sc;
 
     /* ***
      * Constructeurs
@@ -34,73 +34,56 @@ public class Game {
     public Game() {}
 
     public Game init() {
-        if (!loadSave()) {
+        if (!load()) {
             // init attributes
             System.out.println("entre ton nom:");
+            sc = new Scanner(System.in);
+            String nom = sc.nextLine();
 
-            // TODO use a scanner to read player name
+            Board b1 = new Board(nom);
+            Board b2 = new Board("bot");
 
-            // TODO init boards
-            Board b1, b2;
+    		List<AbstractShip> ships1 = createDefaultShips();
+            player1 = new Player(b1, b2, ships1, sc);
+    		List<AbstractShip> ships2 = createDefaultShips();
+    		player2 = new AIPlayer(b2, b1, ships2);
 
-            // TODO init this.player1 & this.player2
-
-            b1.print();
-            // place player ships
             player1.putShips();
             player2.putShips();
         }
+        
         return this;
     }
 
     /* ***
-     * Méthodes
+     * M�thodes
      */
     public void run() {
         int[] coords = new int[2];
-        Board b1 = player1.board;
+        Board b1 = player1.board, b2 = player2.board;
         Hit hit;
+        
+        do
+        {
+        	save();
+        	
+        	System.out.println();
+        	hit = player1.sendHit(coords);
+			System.out.println(b1.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
+        	hit = player2.sendHit(coords);
+			System.out.println(b2.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
+			b1.print();
+        }
+        while (!b1.isCleared() && !b2.isCleared());
 
-        // main loop
-        b1.print();
-        boolean done;
-        do {
-            hit = Hit.MISS; // TODO player1 send a hit
-            boolean strike = hit != Hit.MISS; // TODO set this hit on his board (b1)
-
-            done = updateScore();
-            b1.print();
-            System.out.println(makeHitMessage(false /* outgoing hit */, coords, hit));
-
-            save();
-
-            if (!done && !strike) {
-                do {
-                    hit = Hit.MISS; // TODO player2 send a hit.
-
-                    strike = hit != Hit.MISS;
-                    if (strike) {
-                        b1.print();
-                    }
-                    System.out.println(makeHitMessage(true /* incoming hit */, coords, hit));
-                    done = updateScore();
-
-                    if (!done) {
-                        save();
-                    }
-                } while(strike && !done);
-            }
-
-        } while (!done);
-
+        sc.close();
         SAVE_FILE.delete();
-        System.out.println(String.format("joueur %d gagne", player1.lose ? 2 : 1));
-        sin.close();
+        System.out.println((player1.lose() ? b2.getName() : b1.getName()) + " gagne");
     }
 
 
     private void save() {
-        try {
+        /*try {
             // TODO bonus 2 : uncomment
             //  if (!SAVE_FILE.exists()) {
             //      SAVE_FILE.getAbsoluteFile().getParentFile().mkdirs();
@@ -110,11 +93,11 @@ public class Game {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
-    private boolean loadSave() {
-        if (SAVE_FILE.exists()) {
+    private boolean load() {
+        /*if (SAVE_FILE.exists()) {
             try {
                 // TODO bonus 2 : deserialize players
 
@@ -122,47 +105,8 @@ public class Game {
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         return false;
-    }
-
-    private boolean updateScore() {
-        for (Player player : new Player[]{player1, player2}) {
-            int destroyed = 0;
-            for (AbstractShip ship : player.getShips()) {
-                if (ship.isSunk()) {
-                    destroyed++;
-                }
-            }
-
-            player.destroyedCount = destroyed;
-            player.lose = destroyed == player.getShips().length;
-            if (player.lose) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private String makeHitMessage(boolean incoming, int[] coords, Hit hit) {
-        String msg;
-        ColorUtil.Color color = ColorUtil.Color.RESET;
-        switch (hit) {
-            case MISS:
-                msg = hit.toString();
-                break;
-            case STIKE:
-                msg = hit.toString();
-                color = ColorUtil.Color.RED;
-                break;
-            default:
-                msg = hit.toString() + " coulé";
-                color = ColorUtil.Color.RED;
-        }
-        msg = String.format("%s Frappe en %c%d : %s", incoming ? "<=" : "=>",
-                ((char) ('A' + coords[0])),
-                (coords[1] + 1), msg);
-        return ColorUtil.colorize(msg, color);
     }
 
     private static List<AbstractShip> createDefaultShips() {

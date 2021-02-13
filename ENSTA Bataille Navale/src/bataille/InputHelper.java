@@ -11,7 +11,7 @@ public final class InputHelper {
     private InputHelper() {}
 
     /* **
-     * Classe ShipInput, interne Ã  InputHelper
+     * Classe ShipInput, interne à InputHelper
      */
     public static class ShipInput {
         public String orientation;
@@ -20,7 +20,7 @@ public final class InputHelper {
     }
 
     /* **
-     * Classe CoordInput, interne Ã  InputHelper
+     * Classe CoordInput, interne à InputHelper
      */
     public static class CoordInput {
         public int x;
@@ -28,18 +28,16 @@ public final class InputHelper {
     }
 
     /* **
-     * MÃ©thodes de la classe InputHelper
+     * Méthodes de la classe InputHelper
      */
-    public static ShipInput readShipInput() {
-        @SuppressWarnings("resource")
-        Scanner sin = new Scanner(System.in);
+    public static ShipInput readShipInput(Scanner sc) {
         ShipInput res = new ShipInput();
         String[] validOrientations = {"n", "s", "e", "w"}; // North, South, East, West
         boolean done = false;
 
         do {
             try {
-                String[] in = sin.nextLine().toLowerCase().split(" ");
+                String[] in = sc.nextLine().toLowerCase().split(" ");
                 if (in.length == 2) {
                     String coord = in[0];
                     if (Arrays.asList(validOrientations).contains(in[1])) {
@@ -50,37 +48,35 @@ public final class InputHelper {
                     }
                 }
             } catch (Exception e) {
-                // nop
+                e.printStackTrace();
             }
 
             if (!done) {
                 System.err.println("Format incorrect! Entrez la position sous forme 'A0 n'");
             }
-        } while (!done && sin.hasNextLine());
+        } while (!done && sc.hasNextLine());
 
         return res;
     }
 
-    public static CoordInput readCoordInput() {
-        @SuppressWarnings("resource")
-        Scanner sin = new Scanner(System.in);
+    public static CoordInput readCoordInput(Scanner sc) {
         CoordInput res = new CoordInput();
         boolean done = false;
 
         do {
             try {
-                String coord = sin.nextLine().toLowerCase();
+                String coord = sc.nextLine().toLowerCase();
                 res.x = coord.charAt(0) - 'a';
                 res.y = Integer.parseInt(coord.substring(1, coord.length())) - 1;
                 done = true;
             } catch (Exception e) {
-                // nop
+                e.printStackTrace();
             }
 
             if (!done) {
                 System.err.println("Format incorrect! Entrez la position sous forme 'A0'");
             }
-        } while (!done && sin.hasNextLine());
+        } while (!done && sc.hasNextLine());
 
         return res;
     }

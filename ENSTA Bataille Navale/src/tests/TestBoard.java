@@ -1,6 +1,7 @@
 package tests;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import bataille.Player;
 import bataille.board.Board;
@@ -27,9 +28,11 @@ public class TestBoard
 
 		Board joueur1 = new Board("Joueur 1", 10);
 		Board joueur2 = new Board("Joueur 2", 10);
-		Player player = new Player(joueur1, joueur2, ships);
+		Scanner sc = new Scanner(System.in);
+		Player player = new Player(joueur1, joueur2, ships, sc);
 		
 		player.putShips();
+		sc.close();
 	}
 }
 

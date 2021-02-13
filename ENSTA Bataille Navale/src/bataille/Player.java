@@ -1,6 +1,7 @@
 package bataille;
 
 import java.util.List;
+import java.util.Scanner;
 
 import bataille.board.Board;
 import bataille.board.Hit;
@@ -16,27 +17,26 @@ public class Player {
     protected Board opponentBoard;
     protected int destroyedCount;
     protected AbstractShip[] ships;
-    protected boolean lose;
+    protected Scanner sc;
 
     /**
      * Constructeur
+     * 
+     * @sc peut valoir null si le scanner n'est jamais utilisé
      */
-    public Player(Board board, Board opponentBoard, List<AbstractShip> ships) {
+    public Player(Board board, Board opponentBoard, List<AbstractShip> ships, Scanner sc) {
         this.board = board;
-        
-        // J'ai changé la ligne suivante car la longueur 0 ça ne va pas
-        //this.ships = ships.toArray(new AbstractShip[0]);
-        
         this.ships = ships.toArray(new AbstractShip[ships.size()]);
         this.opponentBoard = opponentBoard;
+        this.sc = sc;
     }
 
     /* **
-     * MÃ©thodes
+     * Méthodes
      */
 
     /**
-     * Read keyboard input to get ships coordinates. Place ships on given coodrinates.
+     * Read keyboard input to get ships coordinates. Place ships on given coordinates.
      */
     public void putShips() {
         int numero = 1;
@@ -55,7 +55,7 @@ public class Player {
             	board.print();
                 String msg = String.format("\nPlacer %d : %s(%d)", numero, s.getName(), s.getLength());
                 System.out.println(msg);
-                InputHelper.ShipInput res = InputHelper.readShipInput();
+                InputHelper.ShipInput res = InputHelper.readShipInput(sc);
                 
                 switch (res.orientation.charAt(0))
                 {
@@ -85,6 +85,11 @@ public class Player {
         board.print();
     }
 
+    /**
+     * send hit from keyboard
+     * @param coords array must be of size 2. Will hold the coord of the send hit.
+     * @return the status of the hit.
+     */
     public Hit sendHit(int[] coords) {
         boolean valide = false;
         Hit hit = null;
@@ -92,8 +97,8 @@ public class Player {
 
         while (!valide)
         {
-            System.out.println("où frapper?");
-            InputHelper.CoordInput hitInput = InputHelper.readCoordInput();
+            System.out.print("où frapper ? ");
+            InputHelper.CoordInput hitInput = InputHelper.readCoordInput(sc);
             int x = hitInput.x, y = hitInput.y;
             
             valide = (x >= 0 && x < size && y >= 0 && y < size);
@@ -101,6 +106,7 @@ public class Player {
             if (valide)
             {
                 hit = opponentBoard.sendHit(x, y);
+                board.setHit(hit != Hit.MISS, x, y);
                 coords[0] = x;
                 coords[1] = y;
             }
@@ -119,5 +125,10 @@ public class Player {
 
     public void setShips(AbstractShip[] ships) {
         this.ships = ships;
+    }
+    
+    public boolean lose()
+    {
+    	return board.isCleared();
     }
 }

@@ -185,7 +185,6 @@ public class Board implements IBoard
 	@Override
 	public void setHit(boolean hit, int x, int y)
 	{
-		System.out.println("hit : " + hit);
 		frappes[y][x] = hit;
 	}
 
