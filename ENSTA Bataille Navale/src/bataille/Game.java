@@ -27,27 +27,69 @@ public class Game {
     private Player player2;
     
     private Scanner sc;
+    private int nbJoueurs;
 
-    /* ***
-     * Constructeurs
-     */
     public Game() {}
 
     public Game init() {
         if (!load()) {
             // init attributes
-            System.out.println("entre ton nom:");
+        	Board b1, b2;
             sc = new Scanner(System.in);
-            String nom = sc.nextLine();
+            
+            do
+            {
+            	System.out.print("Nombre de joueurs humains : ");
+                nbJoueurs = sc.nextInt();
+                sc.nextLine();
+                
+                if (nbJoueurs < 0 || nbJoueurs > 2)
+                	System.out.println("Le nombre de joueurs dois être compris entre 0 inclu et 2 inclu.");
+            }
+            while (nbJoueurs < 0 || nbJoueurs > 2);
+            
+            String nom1 = null, nom2 = null;
+        	
+        	switch (nbJoueurs)
+        	{
+        		case 0:
+        			nom1 = "bot 1";
+                    nom2 = "bot 2";
+        			break;
+        		case 1:
+                    System.out.println("\npseudo : ");
+                    nom1 = sc.nextLine();
+                    nom2 = "bot";
+        			break;
+        		case 2:
+                    System.out.println("\npseudo du joueur 1 : ");
+                    nom1 = sc.nextLine();
+                    System.out.println("\npseudo du joueur 2 : ");
+                    nom2 = sc.nextLine();
+        			break;
+        	}
 
-            Board b1 = new Board(nom);
-            Board b2 = new Board("bot");
-
+        	b1 = new Board(nom1);
+        	b2 = new Board(nom2);
     		List<AbstractShip> ships1 = createDefaultShips();
-            player1 = new Player(b1, b2, ships1, sc);
     		List<AbstractShip> ships2 = createDefaultShips();
-    		player2 = new AIPlayer(b2, b1, ships2);
 
+        	switch (nbJoueurs)
+        	{
+        		case 0:
+                    player1 = new AIPlayer(b1, b2, ships1);
+            		player2 = new AIPlayer(b2, b1, ships2);
+        			break;
+        		case 1:
+                    player1 = new Player(b1, b2, ships1, sc);
+            		player2 = new AIPlayer(b2, b1, ships2);
+        			break;
+        		case 2:
+                    player1 = new Player(b1, b2, ships1, sc);
+            		player2 = new Player(b2, b1, ships2, sc);
+        			break;
+        	}
+        	
             player1.putShips();
             player2.putShips();
         }
@@ -66,19 +108,50 @@ public class Game {
         do
         {
         	save();
-        	
-        	System.out.println();
-        	hit = player1.sendHit(coords);
-			System.out.println(b1.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
-        	hit = player2.sendHit(coords);
-			System.out.println(b2.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
-			b1.print();
+
+        	switch (nbJoueurs)
+        	{
+        		case 0:
+                	System.out.println();
+                	hit = player1.sendHit(coords);
+        			System.out.println(b1.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
+        			b1.print();
+        			sc.nextLine();
+        			
+                	System.out.println();
+                	hit = player2.sendHit(coords);
+        			System.out.println(b2.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
+        			b2.print();
+        			sc.nextLine();
+        			break;
+        			
+        		case 1:
+                	System.out.println();
+                	hit = player1.sendHit(coords);
+        			System.out.println(b1.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
+                	hit = player2.sendHit(coords);
+        			System.out.println(b2.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
+        			b1.print();
+        			break;
+        			
+        		case 2:
+                	System.out.println();
+                	hit = player1.sendHit(coords);
+        			System.out.println(b1.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
+        			b1.print();
+        			
+                	System.out.println();
+                	hit = player2.sendHit(coords);
+        			System.out.println(b2.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
+        			b2.print();
+        			break;
+        	}
         }
         while (!b1.isCleared() && !b2.isCleared());
 
         sc.close();
         SAVE_FILE.delete();
-        System.out.println((player1.lose() ? b2.getName() : b1.getName()) + " gagne");
+        System.out.println("\n" + (player1.lose() ? b2.getName() : b1.getName()) + " gagne");
     }
 
 
@@ -113,7 +186,8 @@ public class Game {
         return Arrays.asList(new AbstractShip[]{new Destroyer(), new Submarine(), new Submarine(), new Battleship(), new Carrier()});
     }
 
-    public static void main(String args[]) {
+    public static void main(String args[])
+    {
         new Game().init().run();
     }
 }

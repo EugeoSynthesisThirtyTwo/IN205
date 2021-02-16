@@ -41,6 +41,7 @@ public class Player {
     public void putShips() {
         int numero = 1;
 
+        System.out.println("\nPlacement des navires de " + board.getName() + " :");
         /**
          * si le nombre de bateaux est différents de 5 ça va planter
          * donc j'ai changé.
@@ -48,11 +49,11 @@ public class Player {
         for (AbstractShip s : ships)
         {
             boolean success = false;
+        	System.out.println();
+        	board.print();
             
             while (!success)
             {
-            	System.out.println();
-            	board.print();
                 String msg = String.format("\nPlacer %d : %s(%d)", numero, s.getName(), s.getLength());
                 System.out.println(msg);
                 InputHelper.ShipInput res = InputHelper.readShipInput(sc);
@@ -97,7 +98,7 @@ public class Player {
 
         while (!valide)
         {
-            System.out.print("où frapper ? ");
+            System.out.print(board.getName() + " : où frapper ? ");
             InputHelper.CoordInput hitInput = InputHelper.readCoordInput(sc);
             int x = hitInput.x, y = hitInput.y;
             

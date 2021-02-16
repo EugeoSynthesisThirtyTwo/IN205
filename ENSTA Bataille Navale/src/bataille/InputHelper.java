@@ -48,7 +48,7 @@ public final class InputHelper {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+            	// nop
             }
 
             if (!done) {
@@ -70,7 +70,7 @@ public final class InputHelper {
                 res.y = Integer.parseInt(coord.substring(1, coord.length())) - 1;
                 done = true;
             } catch (Exception e) {
-                e.printStackTrace();
+            	// nop
             }
 
             if (!done) {
