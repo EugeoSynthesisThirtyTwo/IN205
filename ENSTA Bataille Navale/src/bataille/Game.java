@@ -1,6 +1,13 @@
 package bataille;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -28,14 +35,28 @@ public class Game {
     
     private Scanner sc;
     private int nbJoueurs;
+    private boolean player1Played;
 
     public Game() {}
 
-    public Game init() {
-        if (!load()) {
+    /**
+     * tente de charger la sauvegarde, et sinon,
+     * demande a l'utilisateur de générer la partie.
+     * @return this
+     */
+    public Game init()
+    {
+        sc = new Scanner(System.in);
+        player1Played = false;
+        
+        boolean loaded = false;
+        
+		loaded = load();
+        
+        if (!loaded)
+        {
             // init attributes
         	Board b1, b2;
-            sc = new Scanner(System.in);
             
             do
             {
@@ -93,14 +114,33 @@ public class Game {
             player1.putShips();
             player2.putShips();
         }
+        else
+        {
+			player1.setScanner(sc);
+			player2.setScanner(sc);
+			
+			if (!(player1 instanceof AIPlayer))
+			{
+				System.out.println("Tableau de " + player1.board.getName() + " :");
+				player1.board.print();
+			}
+			
+			if (!(player2 instanceof AIPlayer))
+			{
+				System.out.println("\nTableau de " + player2.board.getName() + " :");
+				player2.board.print();
+			}
+        }
         
         return this;
     }
 
-    /* ***
-     * Méthodes
+    /**
+     * Lance la partie.
+     * Cette fonction se termine à la fin de la partie.
      */
-    public void run() {
+    public void run()
+    {
         int[] coords = new int[2];
         Board b1 = player1.board, b2 = player2.board;
         Hit hit;
@@ -108,20 +148,26 @@ public class Game {
         do
         {
         	save();
-
+        	
         	switch (nbJoueurs)
         	{
         		case 0:
-                	System.out.println();
-                	hit = player1.sendHit(coords);
-        			System.out.println(b1.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
-        			b1.print();
-        			sc.nextLine();
+        			if (!player1Played)
+        			{
+                    	System.out.println();
+                    	hit = player1.sendHit(coords);
+            			System.out.println(b1.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
+            			b1.print();
+            			player1Played = true;
+                    	save();
+            			sc.nextLine();
+        			}
         			
                 	System.out.println();
                 	hit = player2.sendHit(coords);
         			System.out.println(b2.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
         			b2.print();
+        			player1Played = false;
         			sc.nextLine();
         			break;
         			
@@ -135,15 +181,21 @@ public class Game {
         			break;
         			
         		case 2:
-                	System.out.println();
-                	hit = player1.sendHit(coords);
-        			System.out.println(b1.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
-        			b1.print();
+        			if (!player1Played)
+        			{
+                    	System.out.println();
+                    	hit = player1.sendHit(coords);
+            			System.out.println(b1.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
+            			b1.print();
+            			player1Played = true;
+                    	save();
+        			}
         			
                 	System.out.println();
                 	hit = player2.sendHit(coords);
         			System.out.println(b2.getName() + " : " + String.valueOf((char) ('A' + coords[0])) + (coords[1] + 1) + " => " + hit);
         			b2.print();
+        			player1Played = false;
         			break;
         	}
         }
@@ -154,35 +206,63 @@ public class Game {
         System.out.println("\n" + (player1.lose() ? b2.getName() : b1.getName()) + " gagne");
     }
 
-
-    private void save() {
-        /*try {
-            // TODO bonus 2 : uncomment
-            //  if (!SAVE_FILE.exists()) {
-            //      SAVE_FILE.getAbsoluteFile().getParentFile().mkdirs();
-            //  }
-
-            // TODO bonus 2 : serialize players
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+    /**
+     * @return true if saved successfully into SAVE_FILE
+     */
+    boolean save()
+    {
+    	try
+    	{
+            if (!SAVE_FILE.exists())
+            	SAVE_FILE.getAbsoluteFile().getParentFile().mkdirs();
+            
+            ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(SAVE_FILE)));
+            oos.writeInt(nbJoueurs);
+            oos.writeObject(player1);
+            oos.writeObject(player2);
+            oos.writeBoolean(player1Played);
+            oos.close();
+            
+            return true;
+    	}
+    	catch (IOException e)
+    	{
+        	return false;
+    	}
     }
 
-    private boolean load() {
-        /*if (SAVE_FILE.exists()) {
-            try {
-                // TODO bonus 2 : deserialize players
-
-                return true;
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }*/
+    /**
+     * @return true if loaded successfully from SAVE_FILE
+     */
+    private boolean load()
+    {
+        if (SAVE_FILE.exists())
+        {
+        	try
+        	{
+                ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(SAVE_FILE)));
+                nbJoueurs = ois.readInt();
+                player1 = (Player) ois.readObject();
+                player2 = (Player) ois.readObject();
+                player1Played = ois.readBoolean();
+                ois.close();
+                
+            	return true;
+        	}
+        	catch (IOException | ClassNotFoundException e)
+        	{
+            	return false;
+        	}
+        }
+        
         return false;
     }
 
-    private static List<AbstractShip> createDefaultShips() {
+    /**
+     * @return {Destroyer, Submarine, Submarine, BattleShip, Carrier}
+     */
+    private static List<AbstractShip> createDefaultShips()
+    {
         return Arrays.asList(new AbstractShip[]{new Destroyer(), new Submarine(), new Submarine(), new Battleship(), new Carrier()});
     }
 

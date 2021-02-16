@@ -1,7 +1,11 @@
 package bataille.ship;
 
-public abstract class AbstractShip
+import java.io.Serializable;
+
+public abstract class AbstractShip implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	private char label;
 	private String nom;
 	private Orientation orientation;

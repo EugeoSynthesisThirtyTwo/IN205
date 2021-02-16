@@ -1,5 +1,7 @@
 package bataille.board;
 
+import java.io.Serializable;
+
 import bataille.ColorUtil;
 import bataille.ship.AbstractShip;
 import bataille.ship.Battleship;
@@ -7,8 +9,9 @@ import bataille.ship.Carrier;
 import bataille.ship.Destroyer;
 import bataille.ship.Submarine;
 
-public class Board implements IBoard
+public class Board implements IBoard, Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private String name;
 	public final int size;
 	private ShipState[][] navires;

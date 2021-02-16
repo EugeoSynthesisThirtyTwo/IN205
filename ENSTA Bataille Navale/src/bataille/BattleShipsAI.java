@@ -8,7 +8,8 @@ import bataille.board.IBoard;
 import bataille.ship.AbstractShip;
 import bataille.ship.Orientation;
 
-public class BattleShipsAI implements Serializable {
+public class BattleShipsAI implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	/* **
@@ -185,4 +186,6 @@ public class BattleShipsAI implements Serializable {
         }
         return null;
     }
+    
+    
 }

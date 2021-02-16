@@ -1,5 +1,6 @@
 package bataille;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,15 +10,18 @@ import bataille.ship.AbstractShip;
 import bataille.ship.Orientation;
 
 /** yooooo */
-public class Player {
-    /* **
+public class Player implements Serializable
+{
+	private static final long serialVersionUID = 1L;
+	
+	/* **
      * Attributs
      */
     protected Board board;
     protected Board opponentBoard;
     protected int destroyedCount;
     protected AbstractShip[] ships;
-    protected Scanner sc;
+    transient protected Scanner sc;
 
     /**
      * Constructeur
@@ -131,5 +135,10 @@ public class Player {
     public boolean lose()
     {
     	return board.isCleared();
+    }
+    
+    public void setScanner(Scanner sc)
+    {
+    	this.sc = sc;
     }
 }

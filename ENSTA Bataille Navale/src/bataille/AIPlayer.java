@@ -5,8 +5,11 @@ import bataille.board.Board;
 import bataille.board.Hit;
 import bataille.ship.AbstractShip;
 
-public class AIPlayer extends Player {
-    /* **
+public class AIPlayer extends Player
+{
+	private static final long serialVersionUID = 1L;
+	
+	/* **
      * Attribut
      */
     private BattleShipsAI ai;

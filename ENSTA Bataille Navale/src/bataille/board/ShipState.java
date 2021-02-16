@@ -1,13 +1,16 @@
 package bataille.board;
 
+import java.io.Serializable;
+
 import bataille.ColorUtil;
 import bataille.ship.AbstractShip;
 
 /**
  * Sert de case pour la grille de Board.
  */
-public class ShipState
+public class ShipState implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private AbstractShip ship;
 	private boolean struck;
 	
