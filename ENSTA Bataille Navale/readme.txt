@@ -10,5 +10,3 @@ A5 sont les coordonnées sur la grille, et 'e' est la direction:
 	s: sud
 	e: est
 	w: ouest
-
-- Il suffit d'entrer les coordonnées sur la grille lorsqu'on vous demande "où frapper ?"
