@@ -2,8 +2,6 @@ package com.ensta.librarymanager.modele;
 
 public class Livre
 {
-	private static int globalId = 0;
-	
 	private int id;
 	private String titre;
 	private String auteur;
@@ -11,9 +9,7 @@ public class Livre
 	
 	public Livre()
 	{
-		setId(globalId);
-		globalId++;
-		
+		setId(-1);
 		setTitre("");
 		setAuteur("");
 		setIsbn("");
@@ -29,7 +25,7 @@ public class Livre
 	{
 		return id;
 	}
-
+	
 	public void setId(int id)
 	{
 		this.id = id;

@@ -1,6 +1,6 @@
 package com.ensta.librarymanager.modele;
 
-enum Abonnement
+public enum Abonnement
 {
 	BASIC,
 	PREMIUM,

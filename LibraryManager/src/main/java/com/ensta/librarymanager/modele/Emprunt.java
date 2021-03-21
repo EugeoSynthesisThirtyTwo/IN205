@@ -1,24 +1,22 @@
 package com.ensta.librarymanager.modele;
 
+import java.time.LocalDate;
+
 public class Emprunt
 {
-	private static int globalId = 0;
-	
 	private int id;
 	private int idMembre;
 	private int idLivre;
-	private String dateEmprunt;
-	private String dateRetour;
+	private LocalDate dateEmprunt;
+	private LocalDate dateRetour;
 	
 	public Emprunt()
 	{
-		setId(globalId);
-		globalId++;
-		
+		setId(-1);
 		setIdMembre(-1);
 		setIdLivre(-1);
-		setDateEmprunt("");
-		setDateRetour("");
+		setDateEmprunt(null);
+		setDateRetour(null);
 	}
 	
 	@Override
@@ -32,7 +30,7 @@ public class Emprunt
 	{
 		return id;
 	}
-
+	
 	public void setId(int id)
 	{
 		this.id = id;
@@ -58,22 +56,22 @@ public class Emprunt
 		this.idLivre = idLivre;
 	}
 
-	public String getDateEmprunt()
+	public LocalDate getDateEmprunt()
 	{
 		return dateEmprunt;
 	}
 
-	public void setDateEmprunt(String dateEmprunt)
+	public void setDateEmprunt(LocalDate dateEmprunt)
 	{
 		this.dateEmprunt = dateEmprunt;
 	}
 
-	public String getDateRetour()
+	public LocalDate getDateRetour()
 	{
 		return dateRetour;
 	}
 
-	public void setDateRetour(String dateRetour)
+	public void setDateRetour(LocalDate dateRetour)
 	{
 		this.dateRetour = dateRetour;
 	}
