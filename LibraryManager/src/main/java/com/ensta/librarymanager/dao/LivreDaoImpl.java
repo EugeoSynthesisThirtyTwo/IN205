@@ -14,6 +14,8 @@ import com.ensta.librarymanager.persistence.ConnectionManager;
 
 public class LivreDaoImpl implements LivreDao
 {
+	private static final LivreDaoImpl instance = new LivreDaoImpl();
+	
 	private static final String CREATE_QUERY = "INSERT INTO livre (titre, auteur, isbn) VALUES (?, ?, ?);";
 	private static final String SELECT_COUNT = "SELECT COUNT(*) FROM livre;";
 	private static final String SELECT_ONE_QUERY = "SELECT * FROM livre WHERE id=?;";
@@ -21,6 +23,16 @@ public class LivreDaoImpl implements LivreDao
 	private static final String UPDATE_QUERY = "UPDATE livre SET titre=?, auteur=?, isbn=? WHERE id=?;";
 	private static final String DELETE_QUERY = "DELETE FROM livre WHERE id=?;";
 
+	private LivreDaoImpl()
+	{
+		
+	}
+	
+	public static LivreDaoImpl getInstance()
+	{
+		return instance;
+	}
+	
 	@Override
 	public List<Livre> getList() throws DaoException
 	{
@@ -44,8 +56,6 @@ public class LivreDaoImpl implements LivreDao
 				livre.setIsbn(res.getString("isbn"));
 				livres.add(livre);
 			}
-			
-			System.out.println("GET LIST: " + livres);
 		}
 		catch (SQLException e)
 		{
@@ -106,8 +116,6 @@ public class LivreDaoImpl implements LivreDao
 				livre.setAuteur(res.getString("auteur"));
 				livre.setIsbn(res.getString("isbn"));			
 			}
-			
-			System.out.println("GET: " + livre);
 		}
 		catch (SQLException e)
 		{
@@ -172,8 +180,6 @@ public class LivreDaoImpl implements LivreDao
 			
 			if (res.next())
 				livre.setId(res.getInt(1));
-
-			System.out.println("CREATE: " + livre);
 		}
 		catch (SQLException e)
 		{
@@ -229,8 +235,6 @@ public class LivreDaoImpl implements LivreDao
 			preparedStatement.setInt(4, livre.getId());
 			
 			preparedStatement.executeUpdate();
-
-			System.out.println("UPDATE: " + livre);
 		}
 		catch (SQLException e)
 		{
@@ -270,8 +274,6 @@ public class LivreDaoImpl implements LivreDao
 			preparedStatement = connection.prepareStatement(DELETE_QUERY);
 			preparedStatement.setInt(1, id);
 			preparedStatement.executeUpdate();
-			
-			System.out.println("DELETE: Livre(id=" + id + ")");
 		}
 		catch (SQLException e)
 		{
@@ -317,8 +319,6 @@ public class LivreDaoImpl implements LivreDao
 			{
 				count = res.getInt(1);		
 			}
-			
-			System.out.println("COUNT(livre): " + count);
 		}
 		catch (SQLException e)
 		{

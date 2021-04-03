@@ -16,6 +16,8 @@ import com.ensta.librarymanager.persistence.ConnectionManager;
 
 public class EmpruntDaoImpl implements EmpruntDao
 {
+	private static final EmpruntDaoImpl instance = new EmpruntDaoImpl();
+	
 	private static final String CREATE_QUERY = "INSERT INTO emprunt (idMembre, idLivre, dateEmprunt, dateRetour) VALUES (?, ?, ?, ?);";
 	private static final String SELECT_COUNT = "SELECT COUNT(*) FROM emprunt;";
 	private static final String SELECT_ONE_QUERY = "SELECT * FROM emprunt WHERE id=?;";
@@ -24,6 +26,16 @@ public class EmpruntDaoImpl implements EmpruntDao
 	private static final String SELECT_BY_MEMBRE = "SELECT * FROM emprunt WHERE idMembre=?;";
 	private static final String SELECT_BY_LIVRE = "SELECT * FROM emprunt WHERE idLivre=?;";
 	private static final String UPDATE_QUERY = "UPDATE emprunt SET idMembre=?, idLivre=?, dateEmprunt=?, dateRetour=? WHERE id=?;";
+	
+	private EmpruntDaoImpl()
+	{
+		
+	}
+	
+	public static EmpruntDaoImpl getInstance()
+	{
+		return instance;
+	}
 	
 	@Override
 	public List<Emprunt> getList() throws DaoException
@@ -58,8 +70,6 @@ public class EmpruntDaoImpl implements EmpruntDao
 				
 				emprunts.add(emprunt);
 			}
-			
-			System.out.println("GET LIST: " + emprunts);
 		}
 		catch (SQLException e)
 		{
@@ -130,8 +140,6 @@ public class EmpruntDaoImpl implements EmpruntDao
 				
 				emprunts.add(emprunt);
 			}
-			
-			System.out.println("GET LIST CURRENT: " + emprunts);
 		}
 		catch (SQLException e)
 		{
@@ -203,8 +211,6 @@ public class EmpruntDaoImpl implements EmpruntDao
 				
 				emprunts.add(emprunt);
 			}
-			
-			System.out.println("GET LIST BY MEMBRE: " + emprunts);
 		}
 		catch (SQLException e)
 		{
@@ -276,8 +282,6 @@ public class EmpruntDaoImpl implements EmpruntDao
 				
 				emprunts.add(emprunt);
 			}
-			
-			System.out.println("GET LIST BY LIVRE: " + emprunts);
 		}
 		catch (SQLException e)
 		{
@@ -347,8 +351,6 @@ public class EmpruntDaoImpl implements EmpruntDao
 				if (date != null)
 					emprunt.setDateRetour(date.toLocalDate());
 			}
-			
-			System.out.println("GET: " + emprunt);
 		}
 		catch (SQLException e)
 		{
@@ -426,8 +428,6 @@ public class EmpruntDaoImpl implements EmpruntDao
 			
 			if (res.next())
 				emprunt.setId(res.getInt(1));
-
-			System.out.println("CREATE: " + emprunt);
 		}
 		catch (SQLException e)
 		{
@@ -494,8 +494,6 @@ public class EmpruntDaoImpl implements EmpruntDao
 			
 			preparedStatement.setInt(5, emprunt.getId());
 			preparedStatement.executeUpdate();
-
-			System.out.println("UPDATE: " + emprunt);
 		}
 		catch (SQLException e)
 		{
@@ -541,8 +539,6 @@ public class EmpruntDaoImpl implements EmpruntDao
 			{
 				count = res.getInt(1);		
 			}
-			
-			System.out.println("COUNT(emprunt): " + count);
 		}
 		catch (SQLException e)
 		{

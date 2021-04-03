@@ -15,6 +15,8 @@ import com.ensta.librarymanager.persistence.ConnectionManager;
 
 public class MembreDaoImpl implements MembreDao
 {
+	private static final MembreDaoImpl instance = new MembreDaoImpl();
+	
 	private static final String CREATE_QUERY = "INSERT INTO membre (nom, prenom, adresse, email, telephone, abonnement) VALUES (?, ?, ?, ?, ?, 'BASIC');";
 	private static final String SELECT_COUNT = "SELECT COUNT(*) FROM membre;";
 	private static final String SELECT_ONE_QUERY = "SELECT * FROM membre WHERE id=?;";
@@ -22,6 +24,16 @@ public class MembreDaoImpl implements MembreDao
 	private static final String UPDATE_QUERY = "UPDATE membre SET nom=?, prenom=?, adresse=?, email=?, telephone=?, abonnement=? WHERE id=?;";
 	private static final String DELETE_QUERY = "DELETE FROM membre WHERE id=?;";
 
+	private MembreDaoImpl()
+	{
+		
+	}
+	
+	public static MembreDaoImpl getInstance()
+	{
+		return instance;
+	}
+	
 	@Override
 	public List<Membre> getList() throws DaoException
 	{
@@ -48,8 +60,6 @@ public class MembreDaoImpl implements MembreDao
 				membre.setAbonnement(Abonnement.valueOf(res.getString("abonnement")));
 				membres.add(membre);
 			}
-			
-			System.out.println("GET LIST: " + membres);
 		}
 		catch (SQLException e)
 		{
@@ -113,8 +123,6 @@ public class MembreDaoImpl implements MembreDao
 				membre.setTelephone(res.getString("telephone"));			
 				membre.setAbonnement(Abonnement.valueOf(res.getString("abonnement")));
 			}
-			
-			System.out.println("GET: " + membre);
 		}
 		catch (SQLException e)
 		{
@@ -183,8 +191,6 @@ public class MembreDaoImpl implements MembreDao
 			
 			if (res.next())
 				membre.setId(res.getInt(1));
-
-			System.out.println("CREATE: " + membre);
 		}
 		catch (SQLException e)
 		{
@@ -243,8 +249,6 @@ public class MembreDaoImpl implements MembreDao
 			preparedStatement.setInt(7, membre.getId());
 			
 			preparedStatement.executeUpdate();
-
-			System.out.println("UPDATE: " + membre);
 		}
 		catch (SQLException e)
 		{
@@ -284,8 +288,6 @@ public class MembreDaoImpl implements MembreDao
 			preparedStatement = connection.prepareStatement(DELETE_QUERY);
 			preparedStatement.setInt(1, id);
 			preparedStatement.executeUpdate();
-			
-			System.out.println("DELETE: Membre(id=" + id + ")");
 		}
 		catch (SQLException e)
 		{
@@ -331,8 +333,6 @@ public class MembreDaoImpl implements MembreDao
 			{
 				count = res.getInt(1);		
 			}
-			
-			System.out.println("COUNT(membre): " + count);
 		}
 		catch (SQLException e)
 		{
